@@ -13,6 +13,16 @@
     Hi <span th:text="${username}"></span>
   </p>
 
+  <a href="/jankengame?hand=Gu">グー</a>
+  <a href="/jankengame?hand=Choki">チョキ</a>
+  <a href="/jankengame?hand=Pa">パー</a>
+
+  <div th:if="${result != null}">
+    <p>あなたの手：<span th:text="${myHand}"></span></p>
+    <p>相手の手：<span th:text="${cpuHand}"></span></p>
+    <p>結果：<span th:text="${result}"></span></p>
+  </div>
+
 </body>
 
 </html>
