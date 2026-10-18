@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
   <meta charset="UTF-8">
@@ -9,18 +9,44 @@
 <body>
   <h1>Janken GAME!</h1>
 
-  <p th:if="${username != null}">
-    Hi <span th:text="${username}"></span>
+  <!-- ログイン中のユーザー名 -->
+  <h2>ログイン情報</h2>
+  <p>
+    ログイン中のユーザー：
+    <span sec:authentication="name"></span>
   </p>
+
+  <!-- エントリー一覧 -->
+  <h2>エントリー</h2>
+  <ul>
+    <li th:each="user : ${entryUsers}" th:text="${user}">
+    </li>
+  </ul>
+
+  <!-- ログアウト -->
+  <p>
+    <a th:href="@{/logout}">ログアウト</a>
+  </p>
+
+  <hr>
+
+  <!-- 以前のじゃんけん機能 -->
+  <h2>じゃんけん</h2>
 
   <a href="/jankengame?hand=Gu">グー</a>
   <a href="/jankengame?hand=Choki">チョキ</a>
   <a href="/jankengame?hand=Pa">パー</a>
 
   <div th:if="${result != null}">
-    <p>あなたの手：<span th:text="${myHand}"></span></p>
-    <p>相手の手：<span th:text="${cpuHand}"></span></p>
-    <p>結果：<span th:text="${result}"></span></p>
+    <p>あなたの手：
+      <span th:text="${myHand}"></span>
+    </p>
+    <p>相手の手：
+      <span th:text="${cpuHand}"></span>
+    </p>
+    <p>結果：
+      <span th:text="${result}"></span>
+    </p>
   </div>
 
 </body>
