@@ -2,6 +2,9 @@
 package oit.is.z3586.kaizi.janken.controller;
 
 import oit.is.z3586.kaizi.janken.model.Janken;
+import oit.is.z3586.kaizi.janken.model.Entry;
+
+import java.security.Principal;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,9 +15,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class JankenController {
 
+  // DIでEntryオブジェクトを受け取る
+  private final Entry entry;
+
+  public JankenController(Entry entry) {
+    this.entry = entry;
+  }
+
   // Task 1：じゃんけん画面を表示
   @GetMapping("/janken")
-  public String janken() {
+  public String janken(Principal principal, ModelMap model) {
+
+    // ログイン中のユーザー名を取得
+    String username = principal.getName();
+
+    // エントリーにユーザーを追加
+    entry.addUser(username);
+
+    // Thymeleafにデータを渡す
+    model.addAttribute("username", username);
+    model.addAttribute("entryUsers", entry.getUsers());
+
     return "janken";
   }
 
@@ -25,6 +46,7 @@ public class JankenController {
       ModelMap model) {
 
     model.addAttribute("username", username);
+    model.addAttribute("entryUsers", entry.getUsers());
 
     return "janken";
   }
@@ -40,6 +62,9 @@ public class JankenController {
     model.addAttribute("myHand", janken.getMyHand());
     model.addAttribute("cpuHand", janken.getCpuHand());
     model.addAttribute("result", janken.getResult());
+
+    // 対戦後もエントリー一覧を表示
+    model.addAttribute("entryUsers", entry.getUsers());
 
     return "janken";
   }
